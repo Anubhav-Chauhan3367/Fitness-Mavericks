@@ -9,7 +9,7 @@ const HeroBanner = () => (
 		position="relative"
 		p="20px"
 	>
-		<Typography color="#FF2625" fontWeight="600" fontSize="26px">
+		<Typography color="#42f560" fontWeight="600" fontSize="26px">
 			Fitness Club
 		</Typography>
 		<Typography
@@ -32,7 +32,7 @@ const HeroBanner = () => (
 					textDecoration: "none",
 					width: "200px",
 					textAlign: "center",
-					background: "#FF2625",
+					background: "#42f560",
 					padding: "14px",
 					fontSize: "22px",
 					textTransform: "none",
@@ -45,9 +45,9 @@ const HeroBanner = () => (
 		</Stack>
 		<Typography
 			fontWeight={600}
-			color="#FF2625"
+			color="#42f560"
 			sx={{
-				opacity: "0.1",
+				opacity: "0.4",
 				display: { lg: "block", xs: "none" },
 				fontSize: "200px",
 			}}

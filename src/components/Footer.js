@@ -14,7 +14,7 @@ const Footer = () => (
 			<img
 				src={Logo}
 				alt="logo"
-				style={{ width: "200px", height: "41px" }}
+				style={{ width: "200px", height: "200px" }}
 			/>
 		</Stack>
 		<Typography
@@ -24,7 +24,7 @@ const Footer = () => (
 			textAlign="center"
 			pb="40px"
 		>
-			Made with ❤️ by Anubhav Chauhan
+			Made with 💚 by Anubhav Chauhan
 		</Typography>
 	</Box>
 );
