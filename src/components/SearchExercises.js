@@ -24,7 +24,7 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 	const handleSearch = async () => {
 		if (search) {
 			const exercisesData = await fetchData(
-				"https://exercisedb.p.rapidapi.com/exercises",
+				"https://exercisedb.p.rapidapi.com/exercises?limit=0",
 				exerciseOptions
 			);
 
@@ -40,6 +40,12 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
 			setSearch("");
 			setExercises(searchedExercises);
+		}
+	};
+
+	const handleKeyDown = (e) => {
+		if (e.key === "Enter") {
+			handleSearch();
 		}
 	};
 
@@ -60,14 +66,20 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 						input: {
 							fontWeight: "700",
 							border: "none",
-							borderRadius: "4px",
+							borderRadius: "40px",
 						},
 						width: { lg: "1170px", xs: "350px" },
+						paddingLeft: "35px",
 						backgroundColor: "#fff",
+						border: "1px solid #42f560",
 						borderRadius: "40px",
+						"& fieldset": {
+							border: "none",
+						},
 					}}
 					value={search}
 					onChange={(e) => setSearch(e.target.value.toLowerCase())}
+					onKeyDown={handleKeyDown} 
 					placeholder="Search Exercises"
 					type="text"
 				/>
@@ -82,6 +94,9 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 						position: "absolute",
 						right: "0px",
 						fontSize: { lg: "20px", xs: "14px" },
+						border: "none",
+						borderEndEndRadius: "40px",
+						borderStartEndRadius: "40px",
 					}}
 					onClick={handleSearch}
 				>

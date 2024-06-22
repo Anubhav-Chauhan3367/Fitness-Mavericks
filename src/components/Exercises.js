@@ -16,12 +16,12 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
 
 			if (bodyPart === "all") {
 				exercisesData = await fetchData(
-					"https://exercisedb.p.rapidapi.com/exercises",
+					"https://exercisedb.p.rapidapi.com/exercises?limit=0",
 					exerciseOptions
 				);
 			} else {
 				exercisesData = await fetchData(
-					`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
+					`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}?limit=0`,
 					exerciseOptions
 				);
 			}

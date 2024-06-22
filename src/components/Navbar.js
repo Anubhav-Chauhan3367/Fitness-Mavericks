@@ -7,6 +7,7 @@ import Logo from "../assets/images/Logo.png";
 const Navbar = () => (
 	<Stack
 		direction="row"
+		alignItems="center"
 		justifyContent="space-around"
 		sx={{
 			gap: { sm: "123px", xs: "40px" },
@@ -19,7 +20,7 @@ const Navbar = () => (
 			<img
 				src={Logo}
 				alt="logo"
-				style={{ width: "48px", height: "48px", margin: "0px 20px" }}
+				style={{ width: "250px", margin: "0px"}}
 			/>
 		</Link>
 		<Stack
