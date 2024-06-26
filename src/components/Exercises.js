@@ -9,11 +9,12 @@ import Loader from "./Loader";
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [exercisesPerPage] = useState(6);
+	// console.log(exercises);
 
 	useEffect(() => {
 		const fetchExercisesData = async () => {
 			let exercisesData = [];
-
+			// console.log(exerciseOptions)
 			if (bodyPart === "all") {
 				exercisesData = await fetchData(
 					"https://exercisedb.p.rapidapi.com/exercises?limit=0",

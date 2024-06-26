@@ -56,9 +56,9 @@ const Detail = ({ exerciseDetail }) => {
 					{target}. It will help you improve your <br /> mood and gain
 					energy.
 				</Typography>
-				{extraDetail?.map((item) => (
+				{extraDetail?.map((item, index) => (
 					<Stack
-						key={item.name}
+					key={`${item.name}-${index}`}
 						direction="row"
 						gap="24px"
 						alignItems="center"
