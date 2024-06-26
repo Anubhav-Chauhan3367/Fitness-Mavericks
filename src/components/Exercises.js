@@ -9,43 +9,61 @@ import Loader from "./Loader";
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [exercisesPerPage] = useState(6);
-	// console.log(exercises);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		const fetchExercisesData = async () => {
-			let exercisesData = [];
-			// console.log(exerciseOptions)
-			if (bodyPart === "all") {
-				exercisesData = await fetchData(
-					"https://exercisedb.p.rapidapi.com/exercises?limit=0",
-					exerciseOptions
-				);
-			} else {
-				exercisesData = await fetchData(
-					`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}?limit=0`,
-					exerciseOptions
-				);
+			setLoading(true);
+			setError(null);
+			try {
+				let exercisesData = [];
+				if (bodyPart === "all") {
+					exercisesData = await fetchData(
+						"https://exercisedb.p.rapidapi.com/exercises?limit=0",
+						exerciseOptions
+					);
+				} else {
+					exercisesData = await fetchData(
+						`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}?limit=0`,
+						exerciseOptions
+					);
+				}
+				setExercises(exercisesData);
+			} catch (error) {
+				setError("Failed to fetch exercises. Please try again later.");
+				console.error("Fetch error:", error);
+			} finally {
+				setLoading(false);
 			}
-
-			setExercises(exercisesData);
 		};
 
 		fetchExercisesData();
 	}, [bodyPart]);
 
-	// Pagination
 	const indexOfLastExercise = currentPage * exercisesPerPage;
 	const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
-	const currentExercises = exercises.slice(
+	const currentExercises = Array.isArray(exercises) ? exercises.slice(
 		indexOfFirstExercise,
 		indexOfLastExercise
-	);
+	) : [];
 
 	const paginate = (event, value) => {
 		setCurrentPage(value);
-
 		window.scrollTo({ top: 1800, behavior: "smooth" });
 	};
+
+	if (loading) return <Loader />;
+
+	if (error) {
+		return (
+			<Box id="exercises" sx={{ mt: { lg: "109px" } }} mt="50px" p="20px">
+				<Typography variant="h4" color="error" textAlign="center">
+					{error}
+				</Typography>
+			</Box>
+		);
+	}
 
 	if (!currentExercises.length) return <Loader />;
 

@@ -15,8 +15,15 @@ export const youtubeOptions = {
 };
 
 export const fetchData = async (url, options) => {
-	const res = await fetch(url, options);
-	const data = await res.json();
-
-	return data;
+	try {
+		const response = await fetch(url, options);
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.error("Fetch error:", error);
+		throw error; // Rethrow the error to be handled by the caller
+	}
 };

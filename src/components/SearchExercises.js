@@ -3,19 +3,32 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 
 import { exerciseOptions, fetchData } from "../utils/fetchData";
 import HorizontalScrollbar from "./HorizontalScrollbar";
+import Loader from "./Loader"; // Import Loader
 
 const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 	const [search, setSearch] = useState("");
 	const [bodyParts, setBodyParts] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		const fetchExercisesData = async () => {
-			const bodyPartsData = await fetchData(
-				"https://exercisedb.p.rapidapi.com/exercises/bodyPartList?limit=0",
-				exerciseOptions
-			);
+			setLoading(true);
+			setError(null);
 
-			setBodyParts(["all", ...bodyPartsData]);
+			try {
+				const bodyPartsData = await fetchData(
+					"https://exercisedb.p.rapidapi.com/exercises/bodyPartList?limit=0",
+					exerciseOptions
+				);
+
+				setBodyParts(["all", ...bodyPartsData]);
+			} catch (error) {
+				setError("Failed to fetch body parts. Please try again later.");
+				console.error("Fetch error:", error);
+			} finally {
+				setLoading(false);
+			}
 		};
 
 		fetchExercisesData();
@@ -23,23 +36,33 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
 	const handleSearch = async () => {
 		if (search) {
-			const exercisesData = await fetchData(
-				"https://exercisedb.p.rapidapi.com/exercises?limit=0",
-				exerciseOptions
-			);
+			setLoading(true);
+			setError(null);
 
-			const searchedExercises = exercisesData.filter(
-				(item) =>
-					item.name.toLowerCase().includes(search) ||
-					item.target.toLowerCase().includes(search) ||
-					item.equipment.toLowerCase().includes(search) ||
-					item.bodyPart.toLowerCase().includes(search)
-			);
+			try {
+				const exercisesData = await fetchData(
+					"https://exercisedb.p.rapidapi.com/exercises?limit=0",
+					exerciseOptions
+				);
 
-			window.scrollTo({ top: 1800, left: 100, behavior: "smooth" });
+				const searchedExercises = exercisesData.filter(
+					(item) =>
+						item.name.toLowerCase().includes(search) ||
+						item.target.toLowerCase().includes(search) ||
+						item.equipment.toLowerCase().includes(search) ||
+						item.bodyPart.toLowerCase().includes(search)
+				);
 
-			setSearch("");
-			setExercises(searchedExercises);
+				window.scrollTo({ top: 1800, left: 100, behavior: "smooth" });
+
+				setSearch("");
+				setExercises(searchedExercises);
+			} catch (error) {
+				setError("Failed to fetch exercises. Please try again later.");
+				console.error("Search error:", error);
+			} finally {
+				setLoading(false);
+			}
 		}
 	};
 
@@ -48,6 +71,18 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 			handleSearch();
 		}
 	};
+
+	if (loading) return <Loader />;
+
+	if (error) {
+		return (
+			<Box id="search" sx={{ mt: { lg: "109px" } }} mt="50px" p="20px">
+				<Typography variant="h4" color="error" textAlign="center">
+					{error}
+				</Typography>
+			</Box>
+		);
+	}
 
 	return (
 		<Stack alignItems="center" mt="37px" justifyContent="center" p="20px">
@@ -79,7 +114,7 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 					}}
 					value={search}
 					onChange={(e) => setSearch(e.target.value.toLowerCase())}
-					onKeyDown={handleKeyDown} 
+					onKeyDown={handleKeyDown}
 					placeholder="Search Exercises"
 					type="text"
 				/>
